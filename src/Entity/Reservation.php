@@ -80,10 +80,10 @@ class Reservation
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="create_at", type="datetime", nullable=true, insertable=false, updatable=false, generated="ALWAYS"))
+     * @ORM\Column(name="r_created_at", type="datetime", nullable=true, insertable=false, updatable=false, generated="ALWAYS"))
      * @Groups({"full"})
      */
-    private $createAt;
+    private $rCreatedAt;
 
     public function getRId(): ?string
     {
@@ -162,14 +162,14 @@ class Reservation
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeInterface
+    public function getRCreatedAt(): ?\DateTimeInterface
     {
-        return $this->createAt;
+        return $this->rCreatedAt;
     }
 
-    public function setCreateAt(?\DateTimeInterface $createAt): self
+    public function setRCreatedAt(?\DateTimeInterface $rCreatedAt): self
     {
-        $this->createAt = $createAt;
+        $this->rCreatedAt = $rCreatedAt;
 
         return $this;
     }
