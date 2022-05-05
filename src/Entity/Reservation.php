@@ -15,7 +15,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Table(name="reservation", uniqueConstraints={@ORM\UniqueConstraint(name="reservation_un", columns={"r_email", "r_date"})}, indexes={@ORM\Index(name="reservation_r_date_idx", columns={"r_date"})})
  * @ORM\Entity
  */
-#[ApiResource(collectionOperations:['get','post'], itemOperations: ['get'],normalizationContext: ['groups' => ['full']], attributes: ['pagination_enabled' => false, 'route_prefix' => "v1"])]
+#[ApiResource(collectionOperations:['get','post'], itemOperations: ['get'], normalizationContext: ['groups' => ['full']], attributes: ['pagination_enabled' => false, 'route_prefix' => '/v1'])]
 #[ApiFilter(SearchFilter::class, properties: ['rEmail' => 'exact', 'rDate' => 'exact', 'rTime' => 'exact'])]
 class Reservation
 {
