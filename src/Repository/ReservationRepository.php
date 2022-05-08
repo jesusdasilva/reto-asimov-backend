@@ -13,4 +13,30 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
+    public function findActive($rEmail, $rDate){
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.rEmail = :rEmail')
+            ->andWhere('r.rDate >= :rDate')
+            ->setParameter('rEmail', $rEmail)
+            ->setParameter('rDate', $rDate)
+            ->getQuery()
+            ->getResult()
+        ;
+
+
+    }
+
+    public function findAvailable($rDate, $rHour){
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.rDate = :rDate')
+            ->andWhere('r.rHour = :rHour')
+            ->setParameter('rDate', $rDate)
+            ->setParameter('rHour', $rHour)
+            ->getQuery()
+            ->getResult()
+        ;
+
+
+    }
+
 }

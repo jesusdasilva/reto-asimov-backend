@@ -25,11 +25,50 @@ class ReservationController extends AbstractController
             $data = $doctrine->getRepository(Reservation::class)->findAll();
         }
 
-        return $this->json(
-            $data, 
-            Response::HTTP_OK,
-            [],
-            ['groups' => 'full']
+        return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
+    }
+
+    #[Route(path: '/active', name: 'find_active', methods: ['GET'])]
+    public function findActive(ManagerRegistry $doctrine, Request $request): JsonResponse
+    {
+        $data = $doctrine->getRepository(Reservation::class)->findActive(
+            $request->query->get('rEmail'),
+            $request->query->get('rDate')
         );
+
+        return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
+    }
+
+    #[Route(path: '/available', name: 'find_available', methods: ['GET'])]
+    public function findAvailable(ManagerRegistry $doctrine, Request $request): JsonResponse
+    {
+        $data = $doctrine->getRepository(Reservation::class)->findAvailable(
+            $request->query->get('rDate'),
+            $request->query->get('rHour')
+        );
+
+        return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
+    }
+
+    #[Route(path: '/', name: 'create', methods: ['POST'])]
+    public function create(ManagerRegistry $doctrine, Request $request): JsonResponse
+    {
+        $values = json_decode($request->getContent(), true);
+
+        $reservation = new Reservation();
+        $reservation->setRFirstName($values['rFirstName']);
+        $reservation->setRLastName($values['rLastName'] ?? null);
+        $reservation->setRPhone($values['rPhone'] ?? null);
+        $reservation->setREmail($values['rEmail']);
+        $reservation->setRDate(new \DateTime($values['rDate']));
+        $reservation->setRHour($values['rHour']);
+
+        $doctrine->getManager()->persist($reservation);
+        $doctrine->getManager()->flush();
+
+        $data = $reservation;
+        $status = Response::HTTP_CREATED;
+
+        return $this->json($data, $status, [], ['groups' => 'full']);
     }
 }
