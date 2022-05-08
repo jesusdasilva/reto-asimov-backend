@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * Reservation
@@ -17,6 +17,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  */
 #[ApiResource(collectionOperations:['get','post'], itemOperations: ['get'], normalizationContext: ['groups' => ['full']], attributes: ['pagination_enabled' => false, 'route_prefix' => '/v1'])]
 #[ApiFilter(SearchFilter::class, properties: ['rEmail' => 'exact', 'rDate' => 'exact', 'rTime' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['rDate'])]
 class Reservation
 {
     /**
@@ -70,9 +71,9 @@ class Reservation
     private $rHour;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="r_date", type="string", nullable=false)
+     * @ORM\Column(name="r_date", type="datetime", nullable=false)
      * @Groups({"full"})
      */
     private $rDate;
@@ -150,12 +151,12 @@ class Reservation
         return $this;
     }
 
-    public function getRDate(): ?string
+    public function getRDate(): ?\DateTimeInterface
     {
         return $this->rDate;
     }
 
-    public function setRDate(string $rDate): self
+    public function setRDate(\DateTimeInterface $rDate): self
     {
         $this->rDate = $rDate;
 
