@@ -16,7 +16,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  * @ORM\Entity
  */
 #[ApiResource(collectionOperations:['get','post'], itemOperations: ['get'], normalizationContext: ['groups' => ['full']], attributes: ['pagination_enabled' => false, 'route_prefix' => '/v1'])]
-#[ApiFilter(SearchFilter::class, properties: ['rEmail' => 'exact', 'rDate' => 'exact', 'rTime' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['rEmail' => 'exact', 'rDate' => 'exact', 'rHour' => 'exact'])]
 #[ApiFilter(DateFilter::class, properties: ['rDate'])]
 class Reservation
 {
