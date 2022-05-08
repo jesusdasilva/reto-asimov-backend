@@ -2,22 +2,16 @@
 
 namespace App\Entity;
 
+use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * Reservation
  *
  * @ORM\Table(name="reservation", uniqueConstraints={@ORM\UniqueConstraint(name="reservation_un", columns={"r_email", "r_date"})}, indexes={@ORM\Index(name="reservation_r_date_idx", columns={"r_date"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=ReservationRepository::class)
  */
-#[ApiResource(collectionOperations:['get','post'], itemOperations: ['get'], normalizationContext: ['groups' => ['full']], attributes: ['pagination_enabled' => false, 'route_prefix' => '/v1'])]
-#[ApiFilter(SearchFilter::class, properties: ['rEmail' => 'exact', 'rDate' => 'exact', 'rHour' => 'exact'])]
-#[ApiFilter(DateFilter::class, properties: ['rDate'])]
 class Reservation
 {
     /**
