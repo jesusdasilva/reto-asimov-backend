@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Reservation;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Console\Helper\Dumper;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,6 +25,16 @@ class ReservationController extends AbstractController
         }else{
             $data = $doctrine->getRepository(Reservation::class)->findAll();
         }
+
+        return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
+    }
+
+    #[Route(path: '/available-dates', name: 'find_available_dates', methods: ['GET'])]
+    public function findAvailableDates(ManagerRegistry $doctrine, Request $request): JsonResponse
+    {
+        $data = $doctrine->getRepository(Reservation::class)->findAvailableDates(
+            $request->query->get('rDate')
+        );
 
         return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
     }

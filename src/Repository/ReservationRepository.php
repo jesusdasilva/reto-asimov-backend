@@ -14,6 +14,7 @@ class ReservationRepository extends ServiceEntityRepository
     }
 
     public function findActive($rEmail, $rDate){
+        
         return $this->createQueryBuilder('r')
             ->andWhere('r.rEmail = :rEmail')
             ->andWhere('r.rDate >= :rDate')
@@ -22,11 +23,10 @@ class ReservationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-
-
     }
 
     public function findAvailable($rDate, $rHour){
+        
         return $this->createQueryBuilder('r')
             ->andWhere('r.rDate = :rDate')
             ->andWhere('r.rHour = :rHour')
@@ -35,8 +35,19 @@ class ReservationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
 
-
+    public function findAvailableDates($rDate){
+       
+        return $this->createQueryBuilder('r')
+            ->select('r.rDate')
+            ->andWhere('r.rDate = :rDate')
+            ->groupBy('r.rDate')
+            ->having('COUNT(r.rDate) < 10')
+            ->setParameter('rDate', $rDate)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 }
