@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Reservation;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Console\Helper\Dumper;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -33,7 +32,7 @@ class ReservationController extends AbstractController
     public function findAvailableDates(ManagerRegistry $doctrine, Request $request): JsonResponse
     {
         $data = $doctrine->getRepository(Reservation::class)->findAvailableDates(
-            $request->query->get('rDate')
+            $request->query->get('_month')
         );
 
         return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);

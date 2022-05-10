@@ -37,17 +37,18 @@ class ReservationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAvailableDates($rDate){
-       
-        return $this->createQueryBuilder('r')
-            ->select('r.rDate')
-            ->andWhere('r.rDate = :rDate')
-            ->groupBy('r.rDate')
-            ->having('COUNT(r.rDate) < 10')
-            ->setParameter('rDate', $rDate)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    public function findAvailableDates($_month)
+    {
+        $sql = '
+            SELECT r_date 
+            FROM view_available_dates 
+            WHERE date_part(\'month\',r_date) = :_month 
+            ';
 
+        return $this->getEntityManager()
+            ->getConnection()
+            ->prepare($sql)
+            ->executeQuery(['_month' => $_month])
+            ->fetchAllAssociative();
+    }
 }
