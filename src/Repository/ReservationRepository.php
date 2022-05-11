@@ -37,11 +37,11 @@ class ReservationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAvailableDates($_month)
+    public function findDisabledDates($_month)
     {
         $sql = '
             SELECT r_date 
-            FROM view_available_dates 
+            FROM view_disabled_dates 
             WHERE date_part(\'month\',r_date) = :_month 
             ';
 

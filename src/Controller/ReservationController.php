@@ -28,10 +28,10 @@ class ReservationController extends AbstractController
         return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
     }
 
-    #[Route(path: '/available-dates', name: 'find_available_dates', methods: ['GET'])]
-    public function findAvailableDates(ManagerRegistry $doctrine, Request $request): JsonResponse
+    #[Route(path: '/disabled-dates', name: 'find_disabled_dates', methods: ['GET'])]
+    public function findDisabledDates(ManagerRegistry $doctrine, Request $request): JsonResponse
     {
-        $data = $doctrine->getRepository(Reservation::class)->findAvailableDates(
+        $data = $doctrine->getRepository(Reservation::class)->findDisabledDates(
             $request->query->get('_month')
         );
 
