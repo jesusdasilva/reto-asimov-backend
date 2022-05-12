@@ -51,4 +51,15 @@ class ReservationRepository extends ServiceEntityRepository
             ->executeQuery(['_month' => $_month])
             ->fetchAllAssociative();
     }
+
+    public function findDisabledHours($_date)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.rHour')
+            ->andWhere('r.rDate = :rDate')
+            ->setParameter('rDate', $_date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

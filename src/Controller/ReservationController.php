@@ -38,6 +38,16 @@ class ReservationController extends AbstractController
         return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
     }
 
+    #[Route(path: '/disabled-hours', name: 'find_disabled_hours', methods: ['GET'])]
+    public function findDisabledHours(ManagerRegistry $doctrine, Request $request): JsonResponse
+    {
+        $data = $doctrine->getRepository(Reservation::class)->findDisabledHours(
+            $request->query->get('_date')
+        );
+
+        return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
+    }
+
     #[Route(path: '/active', name: 'find_active', methods: ['GET'])]
     public function findActive(ManagerRegistry $doctrine, Request $request): JsonResponse
     {
