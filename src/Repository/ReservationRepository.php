@@ -13,53 +13,60 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    public function findActive($rEmail, $rDate){
-        
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.rEmail = :rEmail')
-            ->andWhere('r.rDate >= :rDate')
-            ->setParameter('rEmail', $rEmail)
-            ->setParameter('rDate', $rDate)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findAvailable($rDate, $rHour){
-        
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.rDate = :rDate')
-            ->andWhere('r.rHour = :rHour')
-            ->setParameter('rDate', $rDate)
-            ->setParameter('rHour', $rHour)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findDisabledDates($_month)
+    public function findDisabledDays($rYear, $rMonth)
     {
         $sql = '
-            SELECT r_date 
-            FROM view_disabled_dates 
-            WHERE date_part(\'month\',r_date) = :_month 
+            SELECT r_day 
+            FROM view_disabled_days
+            WHERE r_year = :rYear and r_month = :rMonth 
             ';
 
         return $this->getEntityManager()
             ->getConnection()
             ->prepare($sql)
-            ->executeQuery(['_month' => $_month])
+            ->executeQuery(['rYear' => $rYear, 'rMonth' => $rMonth])
             ->fetchAllAssociative();
     }
 
-    public function findDisabledHours($_date)
+    public function findDisabledHours($rYear, $rMonth, $rDay)
     {
         return $this->createQueryBuilder('r')
             ->select('r.rHour')
-            ->andWhere('r.rDate = :rDate')
-            ->setParameter('rDate', $_date)
+            ->andWhere('r.rYear = :rYear')
+            ->andWhere('r.rMonth = :rMonth')
+            ->andWhere('r.rDay = :rDay')
+            ->setParameter('rYear', $rYear)
+            ->setParameter('rMonth', $rMonth)
+            ->setParameter('rDay', $rDay)
             ->getQuery()
             ->getResult()
         ;
     }
+
+    // public function findActive($rEmail, $rDate){
+        
+    //     return $this->createQueryBuilder('r')
+    //         ->andWhere('r.rEmail = :rEmail')
+    //         ->andWhere('r.rDate >= :rDate')
+    //         ->setParameter('rEmail', $rEmail)
+    //         ->setParameter('rDate', $rDate)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
+
+    // public function findAvailable($rDate, $rHour){
+        
+    //     return $this->createQueryBuilder('r')
+    //         ->andWhere('r.rDate = :rDate')
+    //         ->andWhere('r.rHour = :rHour')
+    //         ->setParameter('rDate', $rDate)
+    //         ->setParameter('rHour', $rHour)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
+
+
+
 }

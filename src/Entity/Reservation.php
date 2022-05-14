@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * Reservation
  *
- * @ORM\Table(name="reservation", uniqueConstraints={@ORM\UniqueConstraint(name="reservation_un", columns={"r_email", "r_date"})}, indexes={@ORM\Index(name="reservation_r_date_idx", columns={"r_date"})})
+ * @ORM\Table(name="reservation", uniqueConstraints={@ORM\UniqueConstraint(name="reservation_un2", columns={"r_email", "r_hour", "r_day", "r_month", "r_year"}), @ORM\UniqueConstraint(name="reservation_un", columns={"r_hour", "r_day", "r_month", "r_year"})})
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
  */
 class Reservation
@@ -65,20 +65,36 @@ class Reservation
     private $rHour;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="r_date", type="datetime", nullable=false)
+     * @ORM\Column(name="r_day", type="string", nullable=false)
      * @Groups({"full"})
      */
-    private $rDate;
+    private $rDay;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="r_month", type="string", nullable=false)
+     * @Groups({"full"})
+     */
+    private $rMonth;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="r_year", type="string", nullable=false)
+     * @Groups({"full"})
+     */
+    private $rYear;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="r_created_at", type="datetime", nullable=true, insertable=false, updatable=false, generated="ALWAYS"))
+     * @ORM\Column(name="created_at", type="datetime", nullable=true, insertable=false, updatable=false, generated="ALWAYS")
      * @Groups({"full"})
      */
-    private $rCreatedAt;
+    private $createdAt;
 
     public function getRId(): ?string
     {
@@ -145,26 +161,50 @@ class Reservation
         return $this;
     }
 
-    public function getRDate(): ?\DateTimeInterface
+    public function getRDay(): ?string
     {
-        return $this->rDate;
+        return $this->rDay;
     }
 
-    public function setRDate(\DateTimeInterface $rDate): self
+    public function setRDay(string $rDay): self
     {
-        $this->rDate = $rDate;
+        $this->rDay = $rDay;
 
         return $this;
     }
 
-    public function getRCreatedAt(): ?\DateTimeInterface
+    public function getRMonth(): ?string
     {
-        return $this->rCreatedAt;
+        return $this->rMonth;
     }
 
-    public function setRCreatedAt(?\DateTimeInterface $rCreatedAt): self
+    public function setRMonth(string $rMonth): self
     {
-        $this->rCreatedAt = $rCreatedAt;
+        $this->rMonth = $rMonth;
+
+        return $this;
+    }
+
+    public function getRYear(): ?string
+    {
+        return $this->rYear;
+    }
+
+    public function setRYear(string $rYear): self
+    {
+        $this->rYear = $rYear;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
