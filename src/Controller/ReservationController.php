@@ -10,6 +10,7 @@ use App\Entity\Reservation;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/v1/reservation', name: 'v1_reservation_')]
 class ReservationController extends AbstractController
@@ -17,13 +18,13 @@ class ReservationController extends AbstractController
     #[Route(path: '/', name: 'find', methods: ['GET'])]
     public function find(ManagerRegistry $doctrine, Request $request): JsonResponse
     {
-        if(1>= $request->query->count()) {
-            $data = $doctrine->getRepository(Reservation::class)->findBy(
-                $request->query->all()
-            );
-        }else{
+        // if(1>= $request->query->count()) {
+        //     $data = $doctrine->getRepository(Reservation::class)->findBy(
+        //         $request->query->all()
+        //     );
+        // }else{
             $data = $doctrine->getRepository(Reservation::class)->findAll();
-        }
+        // }
 
         return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
     }
@@ -64,36 +65,31 @@ class ReservationController extends AbstractController
         return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
     }
 
-    // #[Route(path: '/available', name: 'find_available', methods: ['GET'])]
-    // public function findAvailable(ManagerRegistry $doctrine, Request $request): JsonResponse
-    // {
-    //     $data = $doctrine->getRepository(Reservation::class)->findAvailable(
-    //         $request->query->get('rDate'),
-    //         $request->query->get('rHour')
-    //     );
+    #[Route(path: '/', name: 'create', methods: ['POST'])]
+    public function create(ManagerRegistry $doctrine, Request $request, ValidatorInterface $validator): JsonResponse
+    {
+        $values = json_decode($request->getContent(), true);
 
-    //     return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
-    // }
+        $reservation = new Reservation();
+        $reservation->setRFirstName($values['rFirstName'] ?? '');
+        $reservation->setRLastName($values['rLastName'] ?? '');
+        $reservation->setRPhone($values['rPhone'] ?? '');
+        $reservation->setREmail($values['rEmail'] ?? '');
+        $reservation->setRHour($values['rHour'] ?? '');
+        $reservation->setRDay($values['rDay'] ?? '');
+        $reservation->setRMonth($values['rMonth'] ?? '');
+        $reservation->setRYear($values['rYear'] ?? '');
 
-    // #[Route(path: '/', name: 'create', methods: ['POST'])]
-    // public function create(ManagerRegistry $doctrine, Request $request): JsonResponse
-    // {
-    //     $values = json_decode($request->getContent(), true);
+        $errors = $validator->validate($reservation);
 
-    //     $reservation = new Reservation();
-    //     $reservation->setRFirstName($values['rFirstName']);
-    //     $reservation->setRLastName($values['rLastName'] ?? null);
-    //     $reservation->setRPhone($values['rPhone'] ?? null);
-    //     $reservation->setREmail($values['rEmail']);
-    //     $reservation->setRDate(new \DateTime($values['rDate']));
-    //     $reservation->setRHour($values['rHour']);
+        if(count($errors) > 0) {
+            
+            return $this->json(str_replace("\n", "", (string) $errors), Response::HTTP_BAD_REQUEST);
+        }else{
+            $doctrine->getManager()->persist($reservation);
+            $doctrine->getManager()->flush();
 
-    //     $doctrine->getManager()->persist($reservation);
-    //     $doctrine->getManager()->flush();
-
-    //     $data = $reservation;
-    //     $status = Response::HTTP_CREATED;
-
-    //     return $this->json($data, $status, [], ['groups' => 'full']);
-    // }
+            return $this->json($reservation, Response::HTTP_CREATED, [], ['groups' => 'full']);
+        }
+    }
 }

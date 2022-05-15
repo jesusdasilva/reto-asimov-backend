@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Reservation
@@ -30,6 +31,9 @@ class Reservation
      * @ORM\Column(name="r_first_name", type="string", nullable=true)
      * @Groups({"full"})
      */
+    #[Assert\Type('string', message: "El campo sólo acepta caracteres alfanuméricos")]
+    #[Assert\NotBlank(message: "El campo es obligatorio")]
+    #[Assert\NotNull(message: "El campo es obligatorio")]
     private $rFirstName;
 
     /**
@@ -38,6 +42,7 @@ class Reservation
      * @ORM\Column(name="r_last_name", type="string", nullable=true)
      * @Groups({"full"})
      */
+    #[Assert\Type('string', message: "El campo sólo acepta caracteres alfanuméricos")]
     private $rLastName;
 
     /**
@@ -46,6 +51,7 @@ class Reservation
      * @ORM\Column(name="r_phone", type="string", nullable=true)
      * @Groups({"full"})
      */
+    #[Assert\Type('string', message: "El campo sólo acepta caracteres alfanuméricos")]
     private $rPhone;
 
     /**
@@ -54,6 +60,9 @@ class Reservation
      * @ORM\Column(name="r_email", type="string", nullable=false)
      * @Groups({"full"})
      */
+    #[Assert\Email(message: 'El Email {{ value }} no es válido.')]
+    #[Assert\NotBlank(message: "El campo es obligatorio")]
+    #[Assert\NotNull(message: "El campo es obligatorio")]
     private $rEmail;
 
     /**
@@ -62,6 +71,9 @@ class Reservation
      * @ORM\Column(name="r_hour", type="string", nullable=false)
      * @Groups({"full"})
      */
+    #[Assert\Type('string', message: "El campo sólo acepta caracteres alfanuméricos")]
+    #[Assert\NotBlank(message: "El campo es obligatorio")]
+    #[Assert\NotNull(message: "El campo es obligatorio")]
     private $rHour;
 
     /**
@@ -70,6 +82,9 @@ class Reservation
      * @ORM\Column(name="r_day", type="string", nullable=false)
      * @Groups({"full"})
      */
+    #[Assert\Type('string', message: "El campo sólo acepta caracteres alfanuméricos")]
+    #[Assert\NotBlank(message: "El campo es obligatorio")]
+    #[Assert\NotNull(message: "El campo es obligatorio")]
     private $rDay;
 
     /**
@@ -78,6 +93,9 @@ class Reservation
      * @ORM\Column(name="r_month", type="string", nullable=false)
      * @Groups({"full"})
      */
+    #[Assert\Type('string', message: "El campo sólo acepta caracteres alfanuméricos")]
+    #[Assert\NotBlank(message: "El campo es obligatorio")]
+    #[Assert\NotNull(message: "El campo es obligatorio")]
     private $rMonth;
 
     /**
@@ -86,6 +104,9 @@ class Reservation
      * @ORM\Column(name="r_year", type="string", nullable=false)
      * @Groups({"full"})
      */
+    #[Assert\Type('string', message: "El campo sólo acepta caracteres alfanuméricos")]
+    #[Assert\NotBlank(message: "El campo es obligatorio")]
+    #[Assert\NotNull(message: "El campo es obligatorio")]
     private $rYear;
 
     /**

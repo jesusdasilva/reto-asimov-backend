@@ -45,32 +45,18 @@ class ReservationRepository extends ServiceEntityRepository
 
     public function findActive($rEmail, $rYear, $rMonth, $rDay){
         
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.rEmail = :rEmail')
-            ->andWhere('r.rYear >= :rYear')
-            ->andWhere('r.rMonth >= :rMonth')
-            ->andWhere('r.rDay >= :rDay')
-            ->setParameter('rEmail', $rEmail)
-            ->setParameter('rYear', $rYear)
-            ->setParameter('rMonth', $rMonth)
-            ->setParameter('rDay', $rDay)
-            ->getQuery()
-            ->getResult()
-        ;
+        $sql = '
+            SELECT * 
+            FROM reservation
+            WHERE (r_year||\'-\'||r_month||\'-\'||r_day) >= (:rYear||\'-\'||:rMonth||\'-\'||:rDay) 
+                AND r_email = :rEmail
+            ';
+
+        return $this->getEntityManager()
+            ->getConnection()
+            ->prepare($sql)
+            ->executeQuery(['rEmail'=>$rEmail, 'rYear' => $rYear, 'rMonth' => $rMonth, 'rDay' => $rDay])
+            ->fetchAllAssociative();
     }
-
-    // public function findAvailable($rDate, $rHour){
-        
-    //     return $this->createQueryBuilder('r')
-    //         ->andWhere('r.rDate = :rDate')
-    //         ->andWhere('r.rHour = :rHour')
-    //         ->setParameter('rDate', $rDate)
-    //         ->setParameter('rHour', $rHour)
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
-
-
 
 }
