@@ -51,16 +51,18 @@ class ReservationController extends AbstractController
         return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
     }
 
-    // #[Route(path: '/active', name: 'find_active', methods: ['GET'])]
-    // public function findActive(ManagerRegistry $doctrine, Request $request): JsonResponse
-    // {
-    //     $data = $doctrine->getRepository(Reservation::class)->findActive(
-    //         $request->query->get('rEmail'),
-    //         $request->query->get('rDate')
-    //     );
+    #[Route(path: '/active', name: 'find_active', methods: ['GET'])]
+    public function findActive(ManagerRegistry $doctrine, Request $request): JsonResponse
+    {
+        $data = $doctrine->getRepository(Reservation::class)->findActive(
+            $request->query->get('rEmail'),
+            $request->query->get('rYear'),
+            $request->query->get('rMonth'),
+            $request->query->get('rDay')
+        );
 
-    //     return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
-    // }
+        return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
+    }
 
     // #[Route(path: '/available', name: 'find_available', methods: ['GET'])]
     // public function findAvailable(ManagerRegistry $doctrine, Request $request): JsonResponse

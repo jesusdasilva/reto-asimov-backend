@@ -43,17 +43,21 @@ class ReservationRepository extends ServiceEntityRepository
         ;
     }
 
-    // public function findActive($rEmail, $rDate){
+    public function findActive($rEmail, $rYear, $rMonth, $rDay){
         
-    //     return $this->createQueryBuilder('r')
-    //         ->andWhere('r.rEmail = :rEmail')
-    //         ->andWhere('r.rDate >= :rDate')
-    //         ->setParameter('rEmail', $rEmail)
-    //         ->setParameter('rDate', $rDate)
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.rEmail = :rEmail')
+            ->andWhere('r.rYear >= :rYear')
+            ->andWhere('r.rMonth >= :rMonth')
+            ->andWhere('r.rDay >= :rDay')
+            ->setParameter('rEmail', $rEmail)
+            ->setParameter('rYear', $rYear)
+            ->setParameter('rMonth', $rMonth)
+            ->setParameter('rDay', $rDay)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     // public function findAvailable($rDate, $rHour){
         
