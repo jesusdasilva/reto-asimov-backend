@@ -59,4 +59,20 @@ class ReservationRepository extends ServiceEntityRepository
             ->fetchAllAssociative();
     }
 
+    public function findByYMDH($rYear, $rMonth, $rDay, $rHour)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.rYear = :rYear')
+            ->andWhere('r.rMonth = :rMonth')
+            ->andWhere('r.rDay = :rDay')
+            ->andWhere('r.rHour = :rHour')
+            ->setParameter('rYear', $rYear)
+            ->setParameter('rMonth', $rMonth)
+            ->setParameter('rDay', $rDay)
+            ->setParameter('rHour', $rHour)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

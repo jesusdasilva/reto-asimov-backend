@@ -65,6 +65,19 @@ class ReservationController extends AbstractController
         return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
     }
 
+    #[Route(path: '/available-hour', name: 'find_available_hour', methods: ['GET'])]
+    public function findAvailableHour(ManagerRegistry $doctrine, Request $request): JsonResponse
+    {
+        $data = $doctrine->getRepository(Reservation::class)->findByYMDH(
+            $request->query->get('rYear'),
+            $request->query->get('rMonth'),
+            $request->query->get('rDay'),
+            $request->query->get('rHour')
+        );
+
+        return $this->json($data, Response::HTTP_OK, [], ['groups' => 'full']);
+    }
+
     #[Route(path: '/', name: 'create', methods: ['POST'])]
     public function create(ManagerRegistry $doctrine, Request $request, ValidatorInterface $validator): JsonResponse
     {
