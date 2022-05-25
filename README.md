@@ -1,12 +1,15 @@
 # RETO ASIMOV BACKEND
 
+``` bash
+# Instalar dependencias
+composer install
+
 # Instalar certificados
 symfony server:ca:install
 
 # Iniciar el Servidor
 symfony server:start
 ```
-
 
 ## Requerimientos
 
