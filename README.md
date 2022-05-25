@@ -1,17 +1,17 @@
 # RETO ASIMOV BACKEND
 
 
-### Instalación
-
-Para usar reto-asimov-backend debes descargarlo de [github](https://github.com/jesusdasilva/reto-asimov-backend), y luego instalar sus dependencias de paquetes.
-
-```
-https://github.com/jesusdasilva/reto-asimov-backend.git
-cd project
+``` bash
+# Instalar dependencias
 composer install
+
+# Instalar certificados
 symfony server:ca:install
+
+# Iniciar el Servidor
 symfony server:start
 ```
+
 
 ## Requerimientos
 
