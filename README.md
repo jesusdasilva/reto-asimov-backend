@@ -1,8 +1,18 @@
 # RETO ASIMOV BACKEND
 
 
+<<<<<<< HEAD
 ``` bash
 # Instalar dependencias
+=======
+### Instalación
+
+Para usar reto-asimov-backend debes descargarlo de [github](https://github.com/jesusdasilva/reto-asimov-backend), y luego instalar sus dependencias de paquetes.
+
+```
+git clone https://github.com/jesusdasilva/reto-asimov-backend.git
+cd project
+>>>>>>> fbef31ebc72fe1aad720213d880dea3cf24aabfe
 composer install
 
 # Instalar certificados
